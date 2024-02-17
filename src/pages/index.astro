@@ -1,0 +1,63 @@
+---
+import Card from "../components/Card.astro"
+
+interface ProductCart {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    category: {
+        id: number;
+        name: string;
+        image: string;
+    };
+    image: string;
+}
+
+const offset = 5;
+const limit = 5;
+
+const products: ProductCart[] = await (await fetch(`https://fakestoreapi.com/products?offset=${offset}&limit=${limit}`)).json();
+---
+
+<html lang="en">
+ <head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<meta name="viewport" content="width=device-width" />
+	<meta name="generator" content={Astro.generator} />
+	<script src="//unpkg.com/alpinejs" defer></script>
+	<title>Render cards with SSG and CSR</title>
+ </head>
+ <body>
+
+	<h1>Render cards with CSR</h1>
+
+	<!-- CSR -->
+	<div x-data="{products: []}" x-init="fetch('https://fakestoreapi.com/products?offset=0&limit=5').then(response => response.json()).then(response => products = response)">
+		<template x-for="product in products">
+			<Card 
+			title="iPhone" 
+			price={200}
+			image="image" 
+			description="Apple" 
+			/>
+		</template>
+	</div>
+
+	<h1>Render cards with SSG</h1>
+
+	<!-- SSG -->
+	<div>
+		{products.map((product) => (
+			<Card
+			title={product.title}
+			price={product.price}
+			description={product.description}
+			image={product.image}
+			/>
+		))}
+    </div>
+
+ </body>
+</html>

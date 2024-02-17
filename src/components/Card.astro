@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+  price: number;
+  description: string;
+  image: string;
+}
+
+const { title, price, description, image } = Astro.props;
+---
+
+<article>
+  <img :src="product.image" :alt="product.title" src={image} alt={title} height="300px" width="300px" />
+  <h2 x-text="product.title">{title}</h2>
+  <p x-text="product.price">{price}</p>
+  <p x-text="product.description">{description}</p>
+</article>
